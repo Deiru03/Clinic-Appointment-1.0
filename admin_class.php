@@ -540,8 +540,20 @@ Class Action {
 				}
 			}
 		}
+		// First get the medicine details
+		$med_info = $this->db->query("SELECT * FROM medicine_list WHERE id = $id")->fetch_array();
+		$previous_stock = $med_info['quantity'];
+		$current_stock = $quantity;
+
+		// Update medicine quantity
 		$update = $this->db->query("UPDATE medicine_list set quantity = $quantity where id = $id");
+
 		if($update){
+			// Add to reports
+			$this->db->query("INSERT INTO medicine_reports 
+				(medicine_id, med_name, med_gname, action, quantity, previous_stock, current_stock, date_created) 
+				VALUES 
+				('$id', '{$med_info['medicine']}', '{$med_info['gname']}', 'Added', '$quan', '$previous_stock', '$current_stock', NOW())");
 			return 1;
 		}
 	}
@@ -556,12 +568,25 @@ Class Action {
 					$data .= ", $k='$v' ";
 				}
 			}
+			// First get the medicine details
+			$med_info = $this->db->query("SELECT * FROM medicine_list WHERE id = $id")->fetch_array();
+			$previous_stock = $med_info['quantity']; 
+			$current_stock = $quantity;
+
+			// Update medicine quantity
+			$update = $this->db->query("UPDATE medicine_list set quantity = $quantity where id = $id");
+			
 			if($quantity < 0){
 				return 2;
 				exit;
 			}else{
 				$update = $this->db->query("UPDATE medicine_list set quantity = $quantity where id = $id");
 				if($update){
+					// Add to reports
+					$this->db->query("INSERT INTO medicine_reports 
+						(medicine_id, med_name, med_gname, action, quantity, previous_stock, current_stock, date_created) 
+						VALUES 
+						('$id', '{$med_info['medicine']}', '{$med_info['gname']}', 'Reduced', '$quan', '$previous_stock', '$current_stock', NOW())");
 					return 1;
 				}	
 			}		

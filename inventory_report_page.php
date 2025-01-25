@@ -18,7 +18,8 @@
                 <thead>
                     <tr>
                     <th width="5%" class="text-center">#</th>
-                    <th width="10%">Medicine ID</th>
+                    <th width="10%">Med ID</th>
+                    <th width="15%">Medicine Name</th>
                     <th width="15%">Action</th>
                     <th width="10%">Quantity</th>
                     <th width="15%">Previous Stock</th>
@@ -37,6 +38,7 @@
                             <tr>
                                 <td class="text-center"><?php echo $i++ ?></td>
                                 <td><?php echo $row['medicine_id']; ?></td>
+                                <td><b><?php echo $row['med_name']; ?></b></td>
                                 <td><b><?php echo $row['action']; ?></b></td>
                                 <td><?php echo $row['quantity']; ?></td>
                                 <td><?php echo $row['previous_stock']; ?></td>

@@ -54,9 +54,29 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
 			<div class="form-group">
 				<p align="left">
 				<label for="time" class="control-label">Select Time</label>
-				<input type="time" class="form-control" name="time" value="<?php echo isset($time) ? $time : '' ?>" required>
+				<input type="time" class="form-control" name="time" id="session_time" onchange="setCutoffTime()" value="<?php echo isset($time) ? $time : '' ?>" required>
 				</p>
 			</div>
+
+			<div class="form-group">
+				<p align="left">
+				<label for="until_time" class="control-label">Select Cutoff Time</label>
+				<input type="time" class="form-control" name="until_time" id="cutoff_time" value="<?php echo isset($until_time) ? $until_time : '' ?>">
+				</p>
+			</div>
+
+			<script>
+			function setCutoffTime() {
+				const sessionTime = document.getElementById('session_time').value;
+				if(sessionTime) {
+					const time = new Date('2000-01-01T' + sessionTime);
+					time.setHours(time.getHours() + 1);
+					const cutoffTime = time.toTimeString().slice(0,5);
+					document.getElementById('cutoff_time').value = cutoffTime;
+				}
+			}
+			</script>
+
 
 			<hr>
 

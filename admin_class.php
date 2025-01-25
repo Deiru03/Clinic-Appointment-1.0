@@ -640,7 +640,7 @@ Class Action {
 				}
 			}
 		}
-		$check = $this->db->query("SELECT * FROM session_list where day ='$day' and time = '$time' and campus_id = '$campus_id'")->num_rows;
+		$check = $this->db->query("SELECT * FROM session_list where day ='$day' and time = '$time' and until_time = '$until_time' and campus_id = '$campus_id'")->num_rows;
 		if($check > 0){
 			return 2;
 			exit;

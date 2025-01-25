@@ -290,11 +290,11 @@
               </li>
               <!-- Temporary Hidden -->
               <li class="nav-item">
-                <!-- <a href="./index.php?page=my_accomplished_appointment_list" class="nav-link nav-my_accomplished_appointment_list tree-item">
+                <a href="./index.php?page=my_accomplished_appointment_list" class="nav-link nav-my_accomplished_appointment_list tree-item">
                   <i class="fas fa-angle-right nav-icon"></i>
                   <p>History of Treatment</p>
                 </a>
-              </li> -->
+              </li>
             </ul>
           </li>
           <li class="nav-item">

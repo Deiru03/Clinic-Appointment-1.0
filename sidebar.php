@@ -259,6 +259,20 @@
                 <i class="right fas fa-chevron-circle-left"></i>
               </p>
             </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="./index.php?page=report_page" class="nav-link nav-report_page tree-item">
+                  <i class="fas fa-angle-right nav-icon"></i>
+                  <p>Client Reports</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link nav-inventory_report tree-item">
+                  <i class="fas fa-angle-right nav-icon"></i>
+                  <p>Inventory Reports</p>
+                </a>
+              </li>
+            </ul>
           </li>
           <?php elseif($_SESSION['login_type'] == 0): ?>
           <li class="nav-item">

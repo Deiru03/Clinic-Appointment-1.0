@@ -51,7 +51,7 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
 			<div class="form-group">
 				<p align="left">
 				<label for="" class="control-label">Appointment Schedule</label>
-				<input type="text" class="form-control" name="sched" id="sched" value="<?php echo $row['day']; ?> | <?php echo $row['time']; ?>" disabled>
+				<input type="text" class="form-control" name="sched" id="sched" value="<?php echo $row['day']; ?> | <?php echo date('h:i A', strtotime($row['time'])); ?><?php echo !empty($row['until_time']) ? ' - '.date('h:i A', strtotime($row['until_time'])) : ''; ?>" disabled>
 				<input type="hidden" class="form-control" name="schedule" id="schedule" value="<?php echo $row['day']; ?> | <?php echo $row['time']; ?>">
 				<input type="hidden" class="form-control" name="session_id" id="session_id" value="<?php echo isset($session_id) ? $session_id : '' ?>">
 				</p>

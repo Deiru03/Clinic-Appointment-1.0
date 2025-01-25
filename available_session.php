@@ -12,6 +12,7 @@
 						<th width="8%"class="text-center">#</th>
 						<th width="20%">Day</th>
 						<th width="20%">Time</th>
+						<th width="20%">Until</th>
 						<th width="12%">Action</th>
 					</tr>
 				</thead>
@@ -31,7 +32,8 @@
 					<tr>
 						<td class="text-center"><?php echo $i++ ?></td>
                         <td><b><?php echo $row['day']; ?></b></td>					
-                        <td><b><?php echo $row['time']; ?></b></td>					
+						<td><b><?php echo date("h:i A", strtotime($row['time'])); ?></b></td>
+						<td><b><?php echo !empty($row['until_time']) ? date("h:i A", strtotime($row['until_time'])) : ''; ?></b></td>				
                         <td class="text-center" style="color: blue">
                             <a class="btn btn-block btn-sm btn-default btn-flat border-primary" href="./index.php?page=my_new_appointment&id=<?php echo $row['id'] ?>"></i>Book Now</a>
                         </td>							

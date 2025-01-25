@@ -58,11 +58,21 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
 				<label for="" class="control-label">Appointment Schedule</label>
 				<select name="session_id" id="session_id" class="form-control form-control-sm select2" onchange="document.getElementById('schedule').value=this.options[this.selectedIndex].text" required>
 					<option value=""></option>
-					<?php 
-						$sched = $conn->query("SELECT *,concat(day,', ',time) as sched FROM session_list order by concat(day,', ',time) asc");
+					{{--  <?php 
+						/* $sched = $conn->query("SELECT *,concat(day,', ',time) as sched FROM session_list order by concat(day,', ',time) asc");
 						while($row=$sched->fetch_assoc()):
 					?>
 					<option value="<?php echo $row['id'] ?>" <?php echo isset($session_id) && $session_id == $row['id'] ? 'selected' : '' ?>><?php echo $row['day'] ?> | <?php echo $row['time'] ?></option>
+					<?php endwhile; */?> --}}
+
+					<?php 
+						$sched = $conn->query("SELECT *, concat(day,', ',time) as sched FROM session_list order by concat(day,', ',time) asc");
+						while($row=$sched->fetch_assoc()):
+							$start_time = date("h:i A", strtotime($row['time']));
+							$until_time = !empty($row['until_time']) ? date("h:i A", strtotime($row['until_time'])) : '';
+							$time_display = !empty($until_time) ? "$start_time - $until_time" : $start_time;
+					?>
+					<option value="<?php echo $row['id'] ?>" <?php echo isset($session_id) && $session_id == $row['id'] ? 'selected' : '' ?>><?php echo $row['day'] ?> | <?php echo $time_display ?></option>
 					<?php endwhile; ?>
 				</select>
 				<input type="hidden" name="schedule" id="schedule" value="<?php echo isset($schedule) ? $schedule : '' ?>" />

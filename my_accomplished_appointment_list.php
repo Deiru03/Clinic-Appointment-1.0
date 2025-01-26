@@ -13,8 +13,8 @@
 						<th width="8%"class="text-center">#</th>
 						<th width="20%">Appointment Date</th>
 						<th width="28%">Ailment</th>
-						<th width="28%">Findings</th>
-						<th width="28%">Treatment</th>
+						<!-- <th width="28%">Findings</th>
+						<th width="28%">Treatment</th> -->
 						<th width="12%">Status</th>
 					</tr>
 				</thead>
@@ -25,7 +25,7 @@
 					$ynow = date("y-m-d");
 					$uid = $_SESSION['login_id'];
 					$camp = $_SESSION['login_campus_id'];
-					$sql = "SELECT * FROM appointment_list where status = 2 and client_id = $uid and campus_id = $camp";
+					$sql = "SELECT * FROM appointment_list where status = 4 and client_id = $uid and campus_id = $camp";
 					$result = $conn->query($sql);
 					if($result->num_rows > 0) {
 						while($row = $result->fetch_assoc()) {
@@ -35,8 +35,8 @@
 						<td class="text-center"><?php echo $i++ ?></td>
 						<td><?php echo $row['schedule']; ?></td>
 						<td><?php echo $row['ailment']; ?></td>
-						<td><?php echo $row['findings']; ?></td>
-						<td><?php echo $row['treatment']; ?></td>
+						<!-- <td><?php echo $row['findings']; ?></td>
+						<td><?php echo $row['treatment']; ?></td> -->
 						<td>
 							<?php 
 								if($row['status'] == 0){
@@ -47,8 +47,10 @@
 									echo "<span class='badge badge-info'>Treatment Done</span>";
 								}elseif($row['status'] == 3){
 									echo "<span class='badge badge-danger'>Cancelled</span>";
+								}elseif($row['status'] == 4){
+									echo "<span class='badge badge-success'>Treatment Completed</span>";
 								}
-                        	?>
+							?>
 						</td>						
 					</tr>	
                     <?php

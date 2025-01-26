@@ -43,6 +43,8 @@
 									echo "<span class='badge badge-info'>Treatment Done</span>";
 								}elseif($row['status'] == 3){
 									echo "<span class='badge badge-danger'>Cancelled</span>";
+								}elseif($row['status'] == 4){
+									echo "<span class='badge badge-success'>Treatment Completed</span>";
 								}
                         	?>
 						</td>						
@@ -50,7 +52,7 @@
 							<button type="button" class="btn btn-default btn-sm btn-flat border-info wave-effect text-info dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
 		                      Select
 		                    </button>
-		                    <div class="dropdown-menu" style="">
+		                    <div class="dropdown-menu">
                                 <?php if($row['status'] == 0): ?>
                                     <a class="dropdown-item edit_appointment" href="javascript:void(0)" data-id="<?php echo $row['id'] ?>">Edit/Resched</a>
                                     <div class="dropdown-divider"></div>

@@ -70,7 +70,7 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
 
 			<div class="col-lg-12 text-right justify-content-center d-flex">
 				<button class="btn btn-primary mr-2">Set Schedule</button>
-				<button class="btn btn-secondary" type="button" onclick="location.href = 'index.php?page=available_sessions'">Back to List</button>
+				<button class="btn btn-secondary" type="button" onclick="location.href = 'index.php?page=available_session'">Back to List</button>
 			</div>
 		</form>
 		

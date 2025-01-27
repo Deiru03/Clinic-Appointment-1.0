@@ -3,23 +3,14 @@
 <?php endif; ?>
 <?php if(isset($_SESSION['login_campus_id'])): ?>
 <?php endif; ?>
-<div class="col-lg-12">
+<div class="col-12">
 	<div class="card card-outline card-success">
 		<div class="card-body">
-			<table class="table tabe-hover table-condensed" id="list">
-				<thead>
-					<tr>
-						<th width="8%"class="text-center">#</th>
-						<th width="20%">Day</th>
-						<th width="20%">Time</th>
-						<th width="20%">Until</th>
-						<th width="12%">Action</th>
-					</tr>
-				</thead>
-				<tbody>
+			<div class="table-responsive">
+				<!-- Mobile view cards -->
+				<div class="d-md-none">
 					<?php
 					$i = 1;
-
 					$ynow = date("y-m-d");
 					$uid = $_SESSION['login_id'];
 					$camp = $_SESSION['login_campus_id'];
@@ -27,56 +18,95 @@
 					$result = $conn->query($sql);
 					if($result->num_rows > 0) {
 						while($row = $result->fetch_assoc()) {
-                    
-                    ?>
-					<tr>
-						<td class="text-center"><?php echo $i++ ?></td>
-                        <td><b><?php echo $row['day']; ?></b></td>					
-						<td><b><?php echo date("h:i A", strtotime($row['time'])); ?></b></td>
-						<td><b><?php echo !empty($row['until_time']) ? date("h:i A", strtotime($row['until_time'])) : ''; ?></b></td>				
-                        <td class="text-center" style="color: blue">
-                            <a class="btn btn-block btn-sm btn-default btn-flat border-primary" href="./index.php?page=my_new_appointment&id=<?php echo $row['id'] ?>"></i>Book Now</a>
-                        </td>							
-					</tr>	
-                    <?php
-                        }
-                      }
-                    ?>
-				</tbody>
-			</table>
+					?>
+					<div class="card mb-3">
+						<div class="card-body">
+							<h5 class="card-title">Session #<?php echo $i++ ?></h5><br>
+							<div class="row">
+								<div class="col-6">Day:</div>
+								<div class="col-6"><strong><?php echo $row['day']; ?></strong></div>
+							</div>
+							<div class="row">
+								<div class="col-6">Time:</div>
+								<div class="col-6"><strong><?php echo date("h:i A", strtotime($row['time'])); ?></strong></div>
+							</div>
+							<div class="row">
+								<div class="col-6">Until:</div>
+								<div class="col-6"><strong><?php echo !empty($row['until_time']) ? date("h:i A", strtotime($row['until_time'])) : ''; ?></strong></div>
+							</div>
+							<div class="mt-3">
+								<a class="btn btn-primary btn-block" href="./index.php?page=my_new_appointment&id=<?php echo $row['id'] ?>">Book Now</a>
+							</div>
+						</div>
+					</div>
+					<?php
+						}
+					}
+					?>
+				</div>
+
+				<!-- Desktop view table -->
+				<table class="table table-hover d-none d-md-table" id="list">
+					<thead>
+						<tr>
+							<th width="8%"class="text-center">#</th>
+							<th width="20%">Day</th>
+							<th width="20%">Time</th>
+							<th width="20%">Until</th>
+							<th width="12%">Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php
+						$i = 1;
+						$result = $conn->query($sql);
+						if($result->num_rows > 0) {
+							while($row = $result->fetch_assoc()) {
+						?>
+						<tr>
+							<td class="text-center"><?php echo $i++ ?></td>
+							<td><b><?php echo $row['day']; ?></b></td>					
+							<td><b><?php echo date("h:i A", strtotime($row['time'])); ?></b></td>
+							<td><b><?php echo !empty($row['until_time']) ? date("h:i A", strtotime($row['until_time'])) : ''; ?></b></td>				
+							<td class="text-center">
+								<a class="btn btn-primary btn-sm" href="./index.php?page=my_new_appointment&id=<?php echo $row['id'] ?>">Book Now</a>
+							</td>							
+						</tr>	
+						<?php
+							}
+						}
+						?>
+					</tbody>
+				</table>
+			</div>
 		</div>
 	</div>
 </div>
+
 <style>
-	table p{
-		margin: unset !important;
+	.card {
+		border-radius: 10px;
+		box-shadow: 1px 2px 4px rgba(100, 100, 100, 251);
+		margin-left: 2px;
+		margin-right: 2px;
 	}
-	table td{
-		vertical-align: middle !important
+	.card-body .row {
+		margin-bottom: 8px;
+		margin-left: 5px;
+		margin-right: 5px;
+	}
+	.btn-primary {
+		border-radius: 5px;
+	}
+	@media (max-width: 768px) {
+		.card-body {
+			padding: 15px;
+		}
 	}
 </style>
+
 <script>
 	$(document).ready(function(){
-	$('#list').dataTable()
-	$('.delete_session').click(function(){
-	_conf("Are you sure to delete this session?","delete_session",[$(this).attr('data-id')])
-	})
-	})
-	function delete_session($id){
-		start_load()
-		$.ajax({
-			url:'ajax.php?action=delete_session',
-			method:'POST',
-			data:{id:$id},
-			success:function(resp){
-				if(resp==1){
-					alert_toast("Data successfully deleted",'success')
-					setTimeout(function(){
-						location.reload()
-					},1500)
-
-				}
-			}
-		})
-	}
+		$('#list').dataTable()
+	});
 </script>

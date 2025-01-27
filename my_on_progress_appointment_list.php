@@ -3,23 +3,25 @@
 <?php endif; ?>
 <?php if(isset($_SESSION['login_campus_id'])): ?>
 <?php endif; ?>
-<div class="col-lg-12">
-	<div class="card card-outline card-success">
-        
+<div class="col-12">
+	<div class="card shadow-sm rounded-lg">
+		<div class="card-header bg-gradient-success text-white">
+			<h3 class="card-title mb-0">My On-Progress Appointments</h3>
+		</div>
 		<div class="card-body">
-			<table class="table tabe-hover table-condensed" id="list">
-				<thead>
-					<tr>
-						<th width="8%"class="text-center">#</th>
-						<th width="20%">Session Schedule</th>
-						<th width="28%">Ailment</th>
-						<th width="12%">Status</th>
-					</tr>
-				</thead>
-				<tbody>
+			<div class="table-responsive">
+				<table class="table table-hover" id="list">
+					<thead class="bg-light">
+						<tr>
+							<th class="text-center">#</th>
+							<th>Schedule</th>
+							<th>Ailment</th>
+							<th>Status</th>
+						</tr>
+					</thead>
+					<tbody>
 					<?php
 					$i = 1;
-
 					$ynow = date("y-m-d");
 					$uid = $_SESSION['login_id'];
 					$camp = $_SESSION['login_campus_id'];
@@ -27,69 +29,114 @@
 					$result = $conn->query($sql);
 					if($result->num_rows > 0) {
 						while($row = $result->fetch_assoc()) {
-                    
-                    ?>
-					<tr>
-						<td class="text-center"><?php echo $i++ ?></td>
-						<td><?php echo $row['schedule']; ?></td>
-						<td><?php echo $row['ailment']; ?></td>
-						<td>
-							<?php 
-								if($row['status'] == 0){
-									echo "<span class='badge badge-warning'>Waiting for Approval</span>";
-								}elseif($row['status'] == 1){
-									echo "<span class='badge badge-primary'>Under Treatment</span>";
-								}elseif($row['status'] == 2){
-									echo "<span class='badge badge-info'>Treatment Done</span>";
-								}elseif($row['status'] == 3){
-									echo "<span class='badge badge-danger'>Cancelled</span>";
-								}
-                        	?>
-						</td>						
-						
-					</tr>	
-                    <?php
-                        }
-                      }
-                    ?>
-				</tbody>
-			</table>
+					?>
+						<tr class="align-middle">
+							<td class="text-center" data-label="#"><?php echo $i++ ?></td>
+							<td data-label="Schedule"><?php echo $row['schedule']; ?></td>
+							<td data-label="Ailment"><?php echo $row['ailment']; ?></td>
+							<td data-label="Status">
+								<?php 
+									$status_badges = [
+										0 => '<span class="badge bg-warning text-dark">Waiting for Approval</span>',
+										1 => '<span class="badge bg-primary">Under Treatment</span>',
+										2 => '<span class="badge bg-info">Treatment Done</span>',
+										3 => '<span class="badge bg-danger">Cancelled</span>'
+									];
+									echo $status_badges[$row['status']] ?? '';
+								?>
+							</td>
+						</tr>    
+					<?php
+						}
+					}
+					?>
+					</tbody>
+				</table>
+			</div>
 		</div>
 	</div>
 </div>
+
 <style>
-	table p{
-		margin: unset !important;
+	.card {
+		border: 1px solid rgb(126, 126, 126);
+		margin-bottom: 1.5rem;
+
 	}
-	table td{
-		vertical-align: middle !important
+	.card-header {
+		border-bottom: 0;
+		border: 1px solid rgb(66, 81, 167);
+		padding: 1rem 1.5rem;
+	}
+	.table {
+		margin-bottom: 0;
+	}
+	.badge {
+		padding: 0.5rem 1rem;
+		font-weight: 500;
+		border-radius: 30px;
+	}
+	
+	/* Mobile-friendly styles */
+	@media screen and (max-width: 768px) {
+		.card-body {
+			padding: 1rem;
+			margin-left: 5px;
+			margin-right: 5px;
+		}
+		.card-body .row {
+			margin-bottom: 8px;
+			margin-left: 5px;
+			margin-right: 5px;
+		}
+		.table-responsive {
+			border: 0;
+		}
+		#list thead {
+			display: none;
+		}
+		#list tr {
+			display: block;
+			margin-bottom: 1rem;
+			background: #fff;
+			box-shadow: 1 2px 4px rgba(0,0,0,0.1);
+			border-radius: 8px;
+			border: 1px solid rgb(73, 60, 190);
+			padding: 1rem;
+		}
+		#list td {
+			display: block;
+			text-align: right;
+			padding: 0.5rem;
+			border: none;
+		}
+		#list td:before {
+			content: attr(data-label);
+			float: left;
+			font-weight: 600;
+			color: #555;
+		}
+		.badge {
+			display: inline-block;
+			width: auto;
+			text-align: center;
+			margin: 0.2rem 0;
+		}
 	}
 </style>
+
 <script>
 	$(document).ready(function(){
-	$('#list').dataTable()
-    $('.edit_appointment').click(function(){
-		uni_modal("<i class='fa fa-id-card'></i> Edit Appointment Details","manage_my_appointment.php?id="+$(this).attr('data-id'))
-	})
-	$('.cancel_appointment').click(function(){
-	_conf("Are you sure to cancel this appointment?","cancel_appointment",[$(this).attr('data-id')])
-	})
-	})
-	function cancel_appointment($id){
-		start_load()
-		$.ajax({
-			url:'ajax.php?action=cancel_appointment',
-			method:'POST',
-			data:{id:$id},
-			success:function(resp){
-				if(resp==1){
-					alert_toast("Appointment successfully cancelled!",'success')
-					setTimeout(function(){
-						location.reload()
-					},1500)
-
-				}
+		$('#list').DataTable({
+			responsive: true,
+			ordering: false,
+			pageLength: 10,
+			lengthMenu: [[5, 10, 25, 50], [5, 10, 25, 50]],
+			dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>rtip',
+			language: {
+				searchPlaceholder: "Search appointments",
+				lengthMenu: "Show _MENU_ appointments",
 			}
-		})
-	}
+		});
+	});
 </script>

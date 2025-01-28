@@ -1,4 +1,4 @@
-<p?php
+<?php
 ?>
 <div class="col-lg-12">
 	<div class="card">
@@ -68,16 +68,14 @@
 		                      <label class="custom-file-label" for="customFile">Choose file</label>
 		                    </div>
 						</div>
-						<div class="form-group d-flex justify-content-center align-items-center flex-column">
-							<div class="text-center mb-2">
-								<img src="<?php echo isset($avatar) ? 'assets/uploads/'.$avatar :'' ?>" alt="Avatar" id="cimg" class="img-fluid img-thumbnail">
-							</div>	
-							<div class="text-center"></div>
-								<p class="text-muted">Please upload your ID or a professional photo as your avatar</p>
-							</div>
+						<div class="form-group d-flex justify-content-center align-items-center">
+							<img src="<?php echo isset($avatar) ? 'assets/uploads/'.$avatar :'' ?>" alt="Avatar" id="cimg" class="img-fluid img-thumbnail ">
 						</div>
-						
+						<div class="form-group d-flex justify-content-center align-items-center">
+							<small class="text-muted">Please upload your ID or a professional photo as your avatar</small>
+						</div>
 					</div>
+
 				</div>
 				<hr>
 				<div class="col-lg-12 text-right justify-content-center d-flex">
@@ -98,28 +96,35 @@
 </style>
 <script>
 	function displayImg(input,_this) {
-	    if (input.files && input.files[0]) {
-	        var reader = new FileReader();
-	        reader.onload = function (e) {
-	        	$('#cimg').attr('src', e.target.result);
-	        }
+		if (input.files && input.files[0]) {
+			var reader = new FileReader();
+			reader.onload = function (e) {
+				$('#cimg').attr('src', e.target.result);
+			}
 
-	        reader.readAsDataURL(input.files[0]);
-	    }
+			reader.readAsDataURL(input.files[0]);
+		} else {
+			$('#cimg').attr('src', 'assets/uploads/default_avatar.png');
+		}
 	}
 	$('#manage_client').submit(function(e){
 		e.preventDefault()
 		$('input').removeClass("border-danger")
 		start_load()
 		$('#msg').html('')
+		let avatar = $('#cimg').attr('src') === 'assets/uploads/default_avatar.png' ? '' : $('input[name="img"]')[0].files[0]
+		let formData = new FormData($(this)[0])
+		if(!avatar){
+			formData.append('img', new File([], 'default_avatar.png'))
+		}
 		$.ajax({
 			url:'ajax.php?action=save_doctor_staff',
-			data: new FormData($(this)[0]),
-		    cache: false,
-		    contentType: false,
-		    processData: false,
-		    method: 'POST',
-		    type: 'POST',
+			data: formData,
+			cache: false,
+			contentType: false,
+			processData: false,
+			method: 'POST',
+			type: 'POST',
 			success:function(resp){
 				if(resp == 1){
 					alert_toast('Data successfully saved.',"success");

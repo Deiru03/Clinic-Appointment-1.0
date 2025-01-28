@@ -69,7 +69,6 @@ Class Action {
 		$check = $this->db->query("SELECT * FROM users where email ='$email' ".(!empty($id) ? " and id != {$id} " : ''))->num_rows;
 		if($check > 0){
 			return 2;
-			exit;
 		}
 		if(isset($_FILES['img']) && $_FILES['img']['tmp_name'] != ''){
 			$fname = strtotime(date('y-m-d H:i')).'_'.$_FILES['img']['name'];
@@ -79,7 +78,7 @@ Class Action {
 		}
 		if(empty($id)){
 		if(!isset($_FILES['img']) || (isset($_FILES['img']) && $_FILES['img']['tmp_name'] == '')){	
-			$data .= ", avatar = 'no-image-available.png' ";
+			$data .= ", avatar = 'images/default-avatar.png' ";
 		}
 			$save = $this->db->query("INSERT INTO users set $data");
 		}else{

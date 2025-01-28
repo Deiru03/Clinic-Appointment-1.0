@@ -1,4 +1,4 @@
-<?php
+<p?php
 ?>
 <div class="col-lg-12">
 	<div class="card">
@@ -21,7 +21,7 @@
 						</div>
             			<div class="form-group">
 							<label for="" class="control-label">Contact Number</label>
-							<input type="text" name="contact" class="form-control form-control-sm" required value="<?php echo isset($lastname) ? $lastname : '' ?>">
+							<input type="text" name="contact" class="form-control form-control-sm" required value="<?php echo isset($contact) ? $contact : '' ?>">
 						</div>
 
 						<div class="form-group">
@@ -62,14 +62,21 @@
 						</div>
 						<div class="form-group">
 							<label for="" class="control-label">Avatar</label>
+							<br>
 							<div class="custom-file">
 		                      <input type="file" class="custom-file-input" id="customFile" name="img" onchange="displayImg(this,$(this))">
 		                      <label class="custom-file-label" for="customFile">Choose file</label>
 		                    </div>
 						</div>
-						<div class="form-group d-flex justify-content-center align-items-center">
-							<img src="<?php echo isset($avatar) ? 'assets/uploads/'.$avatar :'' ?>" alt="Avatar" id="cimg" class="img-fluid img-thumbnail ">
+						<div class="form-group d-flex justify-content-center align-items-center flex-column">
+							<div class="text-center mb-2">
+								<img src="<?php echo isset($avatar) ? 'assets/uploads/'.$avatar :'' ?>" alt="Avatar" id="cimg" class="img-fluid img-thumbnail">
+							</div>	
+							<div class="text-center"></div>
+								<p class="text-muted">Please upload your ID or a professional photo as your avatar</p>
+							</div>
 						</div>
+						
 					</div>
 				</div>
 				<hr>

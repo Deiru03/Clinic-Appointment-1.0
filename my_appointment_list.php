@@ -8,6 +8,7 @@
 							<th class="text-center">#</th>
 							<th>Schedule</th>
 							<th>Appoinment Created<small class="pull-right"> (Date)</small></th>
+							<th>Appoinment Finished<small class="pull-right"> (Date)</small></th>
 							<th>Ailment</th>
 							<th>Status</th>
 							<th>Action</th>
@@ -31,6 +32,7 @@
 							<td class="text-center"><?php echo $i++ ?></td>
 							<td><?php echo $row['schedule']; ?></td>
 							<td><?php echo date("M d, Y - h:i A",strtotime($row['appointed_date'])) ?></td>
+							<td><?php echo date("M d, Y - h:i A",strtotime($row['completed_date'])) ?></td>
 							<td><?php echo $row['ailment']; ?></td>
 							<td>
 								<?php 

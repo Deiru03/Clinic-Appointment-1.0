@@ -19,9 +19,11 @@
                         <thead>
                             <tr>
                                 <th width="8%" class="text-center">#</th>
-                                <th width="12%">Client ID</th>
+                                <th width="12%">Client<br>ID</th>
                                 <th width="20%">Patient Name</th>
-                                <th width="20%">Appointment Date</th>
+                                <th width="20%">Day of Schedule</th>
+                                <th width="20%">Appointment Created</th>
+                                <th width="20%">Appointment Finished</th>
                                 <th width="28%">Ailment</th>
                                 <th width="28%">Findings</th>
                                 <th width="28%">Treatment</th>
@@ -31,7 +33,7 @@
                         <tbody>
                             <?php
                             $i = 1;
-                            $query = "SELECT * FROM appointment_list order by id desc";
+                            $query = "SELECT * FROM appointment_list order by completed_date desc";
                             $result = $conn->query($query);
                             if($result->num_rows > 0) {
                                 while($row = $result->fetch_assoc()) {
@@ -41,6 +43,8 @@
                                 <td><?php echo $row['client_id']; ?></td>
                                 <td><b><?php echo $row['fullname']; ?></b></td>
                                 <td><?php echo $row['schedule']; ?></td>
+                                <td><?php echo !empty($row['appointed_date']) ? date("M d, Y - h:i A", strtotime($row['appointed_date'])) : ''; ?></td>
+                                <td><?php echo !empty($row['completed_date']) ? date("M d, Y - h:i A", strtotime($row['completed_date'])) : ''; ?></td>
                                 <td><?php echo $row['ailment']; ?></td>
                                 <td><?php echo $row['findings']; ?></td>
                                 <td><?php echo $row['treatment']; ?></td>

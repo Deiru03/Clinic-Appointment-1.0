@@ -17,6 +17,7 @@
 						<th width="8%"class="text-center">Queue</th>
 						<th width="20%">Client Name</th>
 						<th width="20%">Session Schedule</th>
+						<th width="20%">Appointment Created</th>
 						<th width="28%">Ailment</th>
 						<th width="12%">Status</th>
 						<th width="12%">Action</th>
@@ -37,8 +38,10 @@
                     ?>
 					<tr>
 						<td class="text-center"><?php echo $i++ ?></td>
+
                         <td><b><?php echo $row['fullname']; ?></b></td>
 						<td><?php echo $row['schedule']; ?></td>
+						<td><?php echo date("M d, Y - h:i A",strtotime($row['appointed_date'])) ?></td>
 						<td><?php echo $row['ailment']; ?></td>
 						<td>
 							<?php 

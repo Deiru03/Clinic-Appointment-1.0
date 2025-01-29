@@ -1,4 +1,6 @@
-<?php include'db_connect.php' ?>
+<?php 
+date_default_timezone_set('Asia/Manila');
+include'db_connect.php' ?>
 <?php if(isset($_SESSION['login_id'])): ?>
 <?php endif; ?>
 
@@ -29,6 +31,7 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
 		<form action="" id="treat_appointment">
 		<input type="hidden" name="campus_id" value="<?php echo isset($campus_id) ? $campus_id : '' ?>">
 		<input type="hidden" name="id" value="<?php echo isset($id) ? $id : '' ?>">
+		<input type="hidden" name="completed_date" value="<?php echo date('Y-m-d H:i:s'); ?>">
 		<input type="hidden" name="status" value="4">
 			<div class="form-group">
 				<p align="left">

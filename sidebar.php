@@ -192,7 +192,7 @@
               <li class="nav-item">
                 <a href="./index.php?page=archived" class="nav-link nav-archived tree-item">
                   <i class="fas fa-angle-right nav-icon"></i>
-                  <p>Archived</p>
+                  <p>Clients Treated</p>
                 </a>
               </li>
             </ul>

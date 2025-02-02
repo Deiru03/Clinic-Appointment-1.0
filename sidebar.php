@@ -23,6 +23,7 @@
             </a>
           </li> 
 
+          <!-- Admin SIDEBAR --> 
           <?php if($_SESSION['login_type'] == 2): ?>            
           <li class="nav-item">
             <a href="#" class="nav-link nav-edit_client">
@@ -132,6 +133,32 @@
               </p>
             </a>
           </li>  
+          <!-- Newly added by Dale (02/02/2025) -->
+          <li class="nav-item dropdown">
+            <a href="#" class="nav-link nav-#">
+              <i class="nav-icon far fa-calendar"></i>
+              <p>
+                Reports Page
+                <i class="right fas fa-chevron-circle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="./index.php?page=client_report_page" class="nav-link nav-client_report_page tree-item">
+                  <i class="fas fa-angle-right nav-icon"></i>
+                  <p>Client Reports</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="./index.php?page=inventory_report_page" class="nav-link nav-inventory_report_page tree-item">
+                  <i class="fas fa-angle-right nav-icon"></i>
+                  <p>Inventory Reports</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <!-- Doctor and Staffs SIDEBAR -->
           <?php elseif($_SESSION['login_type'] == 1): ?>
           <li class="nav-item">
             <a href="#" class="nav-link nav-edit_client">

@@ -3,7 +3,14 @@
     
     <div class="container">
         <div class="container flex-column d-flex justify-content-center align-items-center">
-            <button id="printButton">Print Report</button>
+            <div class="form-inline mb-3">
+                <label for="startDate">From: </label>
+                <input type="date" id="startDate" class="form-control mx-2">
+                <label for="endDate">To: </label>
+                <input type="date" id="endDate" class="form-control mx-2">
+                <button id="filterButton" class="btn btn-primary">Filter</button>
+                <button id="printButton" class="btn btn-success ml-2">Print Report</button>
+            </div>
         </div>
         <div id="reportContent">
             <div class="form-group mt-4 mb-4">
@@ -33,12 +40,12 @@
                         <tbody>
                             <?php
                             $i = 1;
-                            $query = "SELECT * FROM appointment_list order by completed_date desc";
+                            $query = "SELECT * FROM appointment_list WHERE completed_date IS NOT NULL ORDER BY completed_date DESC";
                             $result = $conn->query($query);
                             if($result->num_rows > 0) {
                                 while($row = $result->fetch_assoc()) {
                             ?>
-                            <tr>
+                            <tr data-completed="<?php echo $row['completed_date']; ?>">
                                 <td class="text-center"><?php echo $i++ ?></td>
                                 <td><?php echo $row['client_id']; ?></td>
                                 <td><b><?php echo $row['fullname']; ?></b></td>
@@ -73,6 +80,35 @@
                 </div>
             </div>
         </div>
+        <script>
+            $(document).ready(function(){
+                var table = $('#list').DataTable();
+
+                $('#filterButton').on('click', function() {
+                    var startDate = $('#startDate').val();
+                    var endDate = $('#endDate').val();
+
+                    table.draw();
+
+                    $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+                        var rowDate = new Date($(table.row(dataIndex).node()).data('completed'));
+                        var start = startDate ? new Date(startDate) : null;
+                        var end = endDate ? new Date(endDate) : null;
+
+                        if (start && end) {
+                            return rowDate >= start && rowDate <= end;
+                        } else if (start) {
+                            return rowDate >= start;
+                        } else if (end) {
+                            return rowDate <= end;
+                        }
+                        return true;
+                    });
+
+                    table.draw();
+                });
+            });
+        </script>
     </div>
 </div>
 

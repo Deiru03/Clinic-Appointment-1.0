@@ -38,8 +38,8 @@
 						<th class="text-center"><?php echo $i++ ?></th>
 						<td><b><?php echo ucwords($row['name']) ?></b></td>
 						<td><b><?php echo $row['email'] ?></b></td>
-						<td><b><?php echo isset($dept_arr[$row['campus_id']]) ? $dept_arr[$row['campus_id']] : 'Unknow Campus' ?></b></td>
-						<td><b><?php echo isset($design_arr[$row['patient_type']]) ? $design_arr[$row['patient_type']] : 'Unknow CLient Type' ?></b></td>
+						<td><b><?php echo $dept_arr[$row['campus_id']] ?? 'Unknown Campus' ?></b></td>
+						<td><b><?php echo $design_arr[$row['patient_type']] ?? 'Unknown Client Type' ?></b></td>
 						<td class="text-center">
 							<button type="button" class="btn btn-default btn-sm btn-flat border-info wave-effect text-info dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
 		                      Action
@@ -66,11 +66,11 @@
 <script>
 	$(document).ready(function(){
 		$('#list').dataTable()
-	$('.add_remarks').click(function(){
+	$(document).on('click', '.add_remarks', function(){
 		uni_modal("<i class='fa fa-id-card'></i> Client's Remarks","add_remarks.php?id="+$(this).attr('data-id'), 'mid-large')
 	})
-	$('.delete_client').click(function(){
-	_conf("Are you sure to delete this Client?","delete_client",[$(this).attr('data-id')])
+	$(document).on('click', '.delete_client', function(){
+		_conf("Are you sure to delete this Client?","delete_client",[$(this).attr('data-id')])
 	})
 	})
 	function delete_client($id){

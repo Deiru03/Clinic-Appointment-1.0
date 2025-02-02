@@ -116,7 +116,7 @@ if($action == 'save_doctor_staff'){
 		echo $save;
 }
 if($action == 'delete_doctor_staff'){
-	$save = $crud->delete_staff();
+	$save = $crud->delete_doctor_staff();
 	if($save)
 		echo $save;
 }

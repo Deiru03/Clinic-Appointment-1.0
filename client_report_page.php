@@ -125,13 +125,13 @@
         $('#printButton').on('click', function() {
             printReport(table, startDate, endDate);
         });
-    });
+        });
 
-    function printReport(table, startDate, endDate) {
+        function printReport(table, startDate, endDate) {
         // Get the currently filtered rows using DataTables API
         var filteredRows = $(table.rows({ filter: 'applied' }).nodes()).clone();
-        // Build a temporary table with the same header and filtered body
-        var tempTable = $('<table class="display table tabe-hover table-condensed" id="tempList"/>');
+        // Build a temporary table with Bootstrap classes for styling
+        var tempTable = $('<table class="table table-bordered table-striped" id="tempList"/>');
         tempTable.append($(table.table().node()).find('thead').clone());
         var tbody = $('<tbody/>').append(filteredRows);
         tempTable.append(tbody);
@@ -139,14 +139,33 @@
         // Open a new window for printing
         var printWindow = window.open('', '', 'height=600,width=800');
         printWindow.document.write('<html><head><title>Client Reports</title>');
-        // Optionally include your stylesheet for consistent styling
-        printWindow.document.write('<link rel="stylesheet" href="your_stylesheet.css" type="text/css" />');
+        // Bootstrap style
+        printWindow.document.write('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">');
+        // Additional inline styles for print layout and table borders
+        printWindow.document.write('<style>');
+        printWindow.document.write('body { padding: 20px; }');
+        printWindow.document.write('#reportHeader { text-align: center; margin-bottom: 20px; }');
+        printWindow.document.write('#reportHeader h2 { color: #007bff; font-weight: bold; }');
+        printWindow.document.write('#reportHeader hr { width: 150px; height: 3px; margin: 15px auto; background-color: #007bff; }');
+        // Adding borders to the table and its cells.
+        printWindow.document.write('table { border-collapse: collapse; width: 100%; }');
+        printWindow.document.write('table, th, td { border: 1px solid #dee2e6; }');
+        printWindow.document.write('th, td { padding: 8px; text-align: left; }');
+        printWindow.document.write('</style>');
         printWindow.document.write('</head><body>');
+        printWindow.document.write('<div id="reportHeader">');
+        printWindow.document.write('<h2>Client Reports</h2>');
+        printWindow.document.write('<hr>');
+        printWindow.document.write('<p class="text-muted">Complete overview of patient appointments and treatments</p>');
+        printWindow.document.write('</div>');
+        printWindow.document.write('<div class="card card-outline card-success">');
+        printWindow.document.write('<div class="card-body">');
         printWindow.document.write(tempTable.prop('outerHTML'));
+        printWindow.document.write('</div></div>');
         printWindow.document.write('</body></html>');
         printWindow.document.close();
         printWindow.focus();
         printWindow.print();
         printWindow.close();
-    }
+        }
 </script>

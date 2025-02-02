@@ -38,13 +38,13 @@
 						<th class="text-center"><?php echo $i++ ?></th>
 						<td><b><?php echo ucwords($row['name']) ?></b></td>
 						<td><b><?php echo $row['email'] ?></b></td>
-						<td><b><?php echo isset($dept_arr[$row['campus_id']]) ? $dept_arr[$row['campus_id']] : 'Unknow Campus' ?></b></td>
-						<td><b><?php echo isset($design_arr[$row['designation_id']]) ? $design_arr[$row['designation_id']] : 'Unknow Designation' ?></b></td>
+						<td><b><?php echo $dept_arr[$row['campus_id']] ?? 'Unknow Campus' ?></b></td>
+						<td><b><?php echo $design_arr[$row['designation_id']] ?? 'Unknow Designation' ?></b></td>
 						<td class="text-center">
 							<button type="button" class="btn btn-default btn-sm btn-flat border-info wave-effect text-info dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
 		                      Action
 		                    </button>
-		                    <div class="dropdown-menu" style="">
+							<div class="dropdown-menu">
 		                      <a class="dropdown-item" href="./index.php?page=edit_doctor_staff&id=<?php echo $row['id'] ?>">Edit</a>
 		                      <div class="dropdown-divider"></div>
 		                      <a class="dropdown-item delete_doctor_staff" href="javascript:void(0)" data-id="<?php echo $row['id'] ?>">Delete</a>
@@ -60,8 +60,8 @@
 <script>
 	$(document).ready(function(){
 		$('#list').dataTable()
-	$('.delete_doctor_staff').click(function(){
-	_conf("Are you sure to delete this Clinic Staff?","delete_doctor_staff",[$(this).attr('data-id')])
+	$(document).on('click','.delete_doctor_staff',function(){
+		_conf("Are you sure to delete this Clinic Staff?","delete_doctor_staff",[$(this).attr('data-id')])
 	})
 	})
 	function delete_doctor_staff($id){

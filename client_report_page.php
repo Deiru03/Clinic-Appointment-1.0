@@ -80,35 +80,6 @@
                 </div>
             </div>
         </div>
-        <script>
-            $(document).ready(function(){
-                var table = $('#list').DataTable();
-
-                $('#filterButton').on('click', function() {
-                    var startDate = $('#startDate').val();
-                    var endDate = $('#endDate').val();
-
-                    table.draw();
-
-                    $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
-                        var rowDate = new Date($(table.row(dataIndex).node()).data('completed'));
-                        var start = startDate ? new Date(startDate) : null;
-                        var end = endDate ? new Date(endDate) : null;
-
-                        if (start && end) {
-                            return rowDate >= start && rowDate <= end;
-                        } else if (start) {
-                            return rowDate >= start;
-                        } else if (end) {
-                            return rowDate <= end;
-                        }
-                        return true;
-                    });
-
-                    table.draw();
-                });
-            });
-        </script>
     </div>
 </div>
 
@@ -124,25 +95,58 @@
 <script>
     $(document).ready(function(){
         var table = $('#list').DataTable();
+        var startDate, endDate;
+
+        $('#filterButton').on('click', function() {
+            startDate = $('#startDate').val();
+            endDate = $('#endDate').val();
+
+            // Clear any existing search functions
+            $.fn.dataTable.ext.search.pop();
+
+            $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+                var rowDate = new Date($(table.row(dataIndex).node()).data('completed'));
+                var start = startDate ? new Date(startDate) : null;
+                var end = endDate ? new Date(endDate) : null;
+
+                if (start && end) {
+                    return rowDate >= start && rowDate <= end;
+                } else if (start) {
+                    return rowDate >= start;
+                } else if (end) {
+                    return rowDate <= end;
+                }
+                return true;
+            });
+
+            table.draw();
+        });
 
         $('#printButton').on('click', function() {
-            printReport(table);
+            printReport(table, startDate, endDate);
         });
     });
 
-    function printReport(table) {
-        // Disable DataTables features for printing
-        table.destroy();
-        $('#list').removeAttr('style');
+    function printReport(table, startDate, endDate) {
+        // Get the currently filtered rows using DataTables API
+        var filteredRows = $(table.rows({ filter: 'applied' }).nodes()).clone();
+        // Build a temporary table with the same header and filtered body
+        var tempTable = $('<table class="display table tabe-hover table-condensed" id="tempList"/>');
+        tempTable.append($(table.table().node()).find('thead').clone());
+        var tbody = $('<tbody/>').append(filteredRows);
+        tempTable.append(tbody);
 
-        var printContents = document.getElementById('reportContent').innerHTML;
-        var originalContents = document.body.innerHTML;
-
-        document.body.innerHTML = printContents;
-        window.print();
-        document.body.innerHTML = originalContents;
-
-        // Reinitialize DataTables after printing
-        $('#list').DataTable();
+        // Open a new window for printing
+        var printWindow = window.open('', '', 'height=600,width=800');
+        printWindow.document.write('<html><head><title>Client Reports</title>');
+        // Optionally include your stylesheet for consistent styling
+        printWindow.document.write('<link rel="stylesheet" href="your_stylesheet.css" type="text/css" />');
+        printWindow.document.write('</head><body>');
+        printWindow.document.write(tempTable.prop('outerHTML'));
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+        printWindow.focus();
+        printWindow.print();
+        printWindow.close();
     }
 </script>

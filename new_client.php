@@ -91,41 +91,47 @@
 	}
 </style>
 <script>
-	function displayImg(input,_this) {
-	    if (input.files && input.files[0]) {
-	        var reader = new FileReader();
-	        reader.onload = function (e) {
-	        	$('#cimg').attr('src', e.target.result);
-	        }
-
-	        reader.readAsDataURL(input.files[0]);
-	    }
+	function displayImg(input, _this) {
+		if (input.files && input.files[0]) {
+			var reader = new FileReader();
+			reader.onload = function (e) {
+				$('#cimg').attr('src', e.target.result);
+			}
+			reader.readAsDataURL(input.files[0]);
+		} else {
+			$('#cimg').attr('src', 'assets/uploads/default-avatar.png');
+		}
 	}
 	$('#manage_client').submit(function(e){
-		e.preventDefault()
-		$('input').removeClass("border-danger")
-		start_load()
-		$('#msg').html('')
+		e.preventDefault();
+		$('input').removeClass("border-danger");
+		start_load();
+		$('#msg').html('');
+		let avatar = $('#cimg').attr('src') === 'assets/uploads/default-avatar.png' ? '' : $('input[name="img"]')[0].files[0];
+		let formData = new FormData($(this)[0]);
+		if (!avatar) {
+			formData.append('img', new File([], 'default-avatar.png'));
+		}
 		$.ajax({
-			url:'ajax.php?action=save_client',
-			data: new FormData($(this)[0]),
-		    cache: false,
-		    contentType: false,
-		    processData: false,
-		    method: 'POST',
-		    type: 'POST',
-			success:function(resp){
+			url: 'ajax.php?action=save_client',
+			data: formData,
+			cache: false,
+			contentType: false,
+			processData: false,
+			method: 'POST',
+			type: 'POST',
+			success: function(resp){
 				if(resp == 1){
-					alert_toast('Data successfully saved.',"success");
+					alert_toast('Data successfully saved.', "success");
 					setTimeout(function(){
-						location.replace('index.php?page=client_list')
-					},750)
-				}else if(resp == 2){
+						location.replace('index.php?page=client_list');
+					},750);
+				} else if(resp == 2){
 					$('#msg').html("<div class='alert alert-danger'>Email already exist.</div>");
-					$('[name="email"]').addClass("border-danger")
-					end_load()
+					$('[name="email"]').addClass("border-danger");
+					end_load();
 				}
 			}
-		})
-	})
+		});
+	});
 </script>

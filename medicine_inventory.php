@@ -69,13 +69,13 @@
 <script>
 	$(document).ready(function(){
 		$('#list').dataTable()
-		$('.new_medicine').click(function(){
+		$(document).on('click','.new_medicine',function(){
 			uni_modal("New Medicine","manage_medicine.php")
 		})
-		$('.add_medicine').click(function(){
+		$(document).on('click','.add_medicine',function(){
 			uni_modal("In Medicine","in_medicine.php?id="+$(this).attr('data-id'))
 		})
-		$('.sub_medicine').click(function(){
+		$(document).on('click','.sub_medicine',function(){
 			uni_modal("Out Medicine","out_medicine.php?id="+$(this).attr('data-id'))
 		})
 	})
